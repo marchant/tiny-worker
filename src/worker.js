@@ -63,7 +63,11 @@ process.once("message", obj => {
 	if (typeof exp === "function") {
 		exp();
 	} else {
-		vm.createScript(exp).runInThisContext();
+		try {
+			vm.createScript(exp,input).runInThisContext();
+		} catch (err) {
+			(global.onerror || global.self.onerror || noop)(err);
+		}
 	}
 });
 
